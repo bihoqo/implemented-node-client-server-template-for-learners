@@ -5,7 +5,7 @@ interface Pair {
     value: string;
 }
 
-export default function Exercise5() {
+export default function ExerciseKeyValuePage() {
     const [pairs, setPairs] = useState<Pair[]>([]);
     const [newPair, setNewPair] = useState<Pair>({key: "", value: ""});
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Exercise1() {
+export default function ExerciseCounterPage() {
     const [counter, setCounter] = useState(0);
 
     return (

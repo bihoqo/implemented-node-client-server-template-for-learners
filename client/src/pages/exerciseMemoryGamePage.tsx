@@ -35,7 +35,7 @@ function shuffleArray<T>(array: T[]): T[] {
     return array;
 }
 
-export default function Exercise6() {
+export default function ExerciseMemoryGamePage() {
     const [flippedCards, setFlippedCards] = useState<Card[]>([]);
     const [matchedCards, setMatchedCards] = useState<Card[]>([]);
 

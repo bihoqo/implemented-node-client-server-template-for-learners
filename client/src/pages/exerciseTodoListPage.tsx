@@ -8,7 +8,7 @@ interface Todo {
     completed: boolean;
 }
 
-export default function TodoList() {
+export default function ExerciseTodoListPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [text, setText] = useState("");
     const [filterText, setFilterText] = useState("");

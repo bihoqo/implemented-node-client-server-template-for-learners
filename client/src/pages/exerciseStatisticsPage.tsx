@@ -21,22 +21,23 @@ interface Statistics {
     youngestStudent: Student | null;
 }
 
-export default function Exercise4() {
+export default function ExerciseStatisticsPage() {
     const [students, setStudents] = useState<Student[]>([]);
-    const [newStudent, setNewStudent] = useState<Student>({
+    const [studentInputForm, setStudentInputForm] = useState<Student>({
         name: "",
         age: 0,
         grades: {math: 0, english: 0, science: 0},
     });
 
-    const disabledAddButton = newStudent.name === "" || newStudent.age === 0;
+    const studentInInputFormUnique = students.findIndex((student) => student.name === studentInputForm.name) === -1;
+    const disabledAddButton = studentInputForm.name === "" || studentInputForm.age === 0;
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         const inputValue = parseInt(value);
         const newValue = isNaN(inputValue) ? 0 : Math.min(Math.max(0, inputValue), 100);
 
-        setNewStudent((prev) => ({
+        setStudentInputForm((prev) => ({
             ...prev,
             [name]: name === 'age' ? parseInt(value) : value,
             grades: {
@@ -46,12 +47,24 @@ export default function Exercise4() {
         }));
     };
 
-    const addStudent = () => {
-        setStudents([...students, newStudent]);
-        setNewStudent({name: "", age: 0, grades: {math: 0, english: 0, science: 0}}); // Reset form
+    const addStudent = (newStudent: Student) => {
+        const existingStudentIndex = students.findIndex(student => student.name === newStudent.name);
+        if (existingStudentIndex !== -1) {
+            const updatedStudents = [...students];
+            updatedStudents[existingStudentIndex] = newStudent;
+            setStudents(updatedStudents);
+        } else {
+            setStudents([...students, newStudent]);
+        }
+        setStudentInputForm({ name: "", age: 0, grades: { math: 0, english: 0, science: 0 } }); // Reset form
     };
 
-    const addRandomStudent = () => {
+    const addStudentButtonClickHandler = () => {
+        addStudent(studentInputForm);
+        setStudentInputForm({name: "", age: 0, grades: {math: 0, english: 0, science: 0}}); // Reset form
+    };
+
+    const addRandomStudentButtonClickHandler = () => {
         const randomStudent: Student = {
             name: faker.person.fullName(),
             age: Math.floor(Math.random() * 18) + 12,
@@ -61,8 +74,13 @@ export default function Exercise4() {
                 science: Math.floor(Math.random() * 100),
             },
         };
-        setStudents([...students, randomStudent]);
+        addStudent(randomStudent);
     };
+
+    const editStudent = (index: number) => {
+        const student = students[index];
+        setStudentInputForm(student);
+    }
 
     const deleteStudent = (index: number) => {
         const updatedStudents = [...students];
@@ -83,7 +101,7 @@ export default function Exercise4() {
                         type="text"
                         name="name"
                         id="name"
-                        value={newStudent.name}
+                        value={studentInputForm.name}
                         onChange={handleInputChange}
                         placeholder="Name"
                         className="input input-bordered w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-amber-100"
@@ -97,7 +115,7 @@ export default function Exercise4() {
                         type="number"
                         name="age"
                         id="age"
-                        value={newStudent.age.toString()}
+                        value={studentInputForm.age.toString()}
                         onChange={handleInputChange}
                         placeholder="Age"
                         className="input input-bordered w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-amber-100"
@@ -112,7 +130,7 @@ export default function Exercise4() {
                         type="number"
                         name="math"
                         id="math"
-                        value={newStudent.grades.math.toString()}
+                        value={studentInputForm.grades.math.toString()}
                         onChange={handleInputChange}
                         placeholder="Math Grade"
                         className="input input-bordered w-full p-2 border  border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-amber-100"
@@ -126,7 +144,7 @@ export default function Exercise4() {
                         type="number"
                         name="english"
                         id="english"
-                        value={newStudent.grades.english.toString()}
+                        value={studentInputForm.grades.english.toString()}
                         onChange={handleInputChange}
                         placeholder="English Grade"
                         className="input input-bordered w-full p-2 border  border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-amber-100"
@@ -140,7 +158,7 @@ export default function Exercise4() {
                         type="number"
                         name="science"
                         id="science"
-                        value={newStudent.grades.science.toString()}
+                        value={studentInputForm.grades.science.toString()}
                         onChange={handleInputChange}
                         placeholder="Science Grade"
                         className="input input-bordered w-full p-2 border  border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-amber-100"
@@ -148,12 +166,12 @@ export default function Exercise4() {
                 </div>
             </div>
             <div className="flex flex-row gap-2">
-                <button onClick={addStudent} disabled={disabledAddButton}
+                <button onClick={addStudentButtonClickHandler} disabled={disabledAddButton}
                         className={clsx("btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
                             {"opacity-50": disabledAddButton})}>
-                    Add Student
+                    {studentInInputFormUnique ? "Add Student" : "Update Student"}
                 </button>
-                <button onClick={addRandomStudent}
+                <button onClick={addRandomStudentButtonClickHandler}
                         className={clsx("btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",)}>
                     Add Random Student
                 </button>
@@ -162,7 +180,9 @@ export default function Exercise4() {
             <h2 className="text-2xl font-semibold text-center text-blue-600 my-6">Students</h2>
             <div className="flex flex-row flex-wrap gap-2">
                 {students.map((student, index) => {
-                    return <StudentCard student={student} deleteStudent={deleteStudent} index={index}/>
+                    return <StudentCard key={student.name} student={student} editStudent={editStudent}
+                                        deleteStudent={deleteStudent}
+                                        index={index}/>
                 })}
             </div>
 
@@ -176,10 +196,10 @@ interface StudentCardProps {
     student: Student;
     index: number;
     deleteStudent: (index: number) => void;
-
+    editStudent: (index: number) => void;
 }
 
-export function StudentCard({student, index, deleteStudent}: StudentCardProps) {
+export function StudentCard({student, index, editStudent, deleteStudent}: StudentCardProps) {
     return (
         <div className="border border-gray-200 p-4 rounded-lg shadow-md mb-4 relative bg-white">
             <div className="flex justify-between items-center mb-2">
@@ -190,7 +210,13 @@ export function StudentCard({student, index, deleteStudent}: StudentCardProps) {
             <p className="mb-2 text-gray-700">English: {student.grades.english}</p>
             <p className="mb-2 text-gray-700">Science: {student.grades.science}</p>
             <button
-                className="w-full text-red-500 hover:text-red-700 focus:outline-none px-2 py-1 rounded bg-red-100"
+                className="w-full text-green-500 hover:text-green-700 focus:outline-none px-2 py-1 rounded bg-green-100"
+                onClick={() => editStudent(index)}
+            >
+                Edit
+            </button>
+            <button
+                className="w-full text-red-500 hover:text-red-700 focus:outline-none px-2 py-1 rounded bg-red-100 mt-2"
                 onClick={() => deleteStudent(index)}
             >
                 Delete

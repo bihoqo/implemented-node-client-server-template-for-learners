@@ -10,7 +10,7 @@ interface LoginFormProps {
     errorMessage?: string;
 }
 
-export default function Exercise8() {
+export default function ExerciseLoginPage() {
     const {setUserToken, userToken, removeToken} = useToken();
     const [errorMessage, setErrorMessage] = useState<string | undefined>(
         undefined

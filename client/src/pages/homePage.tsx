@@ -3,17 +3,21 @@ import clsx from "clsx";
 import {COLORS} from "../const/colors.ts";
 
 const EXERCISES: ExerciseInfo[] = [
-    {id: 1, subject: "Counter", path: "/exercise1"},
-    {id: 2, subject: "Input Text", path: "/exercise2"},
-    {id: 3, subject: "Todo list", path: "/exercise3"},
-    {id: 4, subject: "Statistics", path: "/exercise4"},
-    {id: 5, subject: "Key value", path: "/exercise5"},
-    {id: 6, subject: "Memory game", path: "/exercise6"},
-    {id: 7, subject: "Register (Req-Res)", path: "/exercise7"},
-    {id: 8, subject: "Logic (Req-Res)", path: "/exercise8"},
+    {id: 1, subject: "Counter", path: "/exerciseCounterPage"},
+    {id: 2, subject: "Button color changes", path: "/exerciseButtonColorPage"},
+    {id: 3, subject: "Options", path: "/exerciseOptionsPage"},
+    {id: 4, subject: "Input Text", path: "/exerciseInputTextPage"},
+    {id: 5, subject: "Todo list", path: "/exerciseTodoListPage"},
+    {id: 6, subject: "Statistics", path: "/exerciseStatisticsPage"},
+    {id: 7, subject: "Key value", path: "/exerciseKeyValuePage"},
+    {id: 8, subject: "Memory game", path: "/exerciseMemoryGamePage"},
+    {id: 9, subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
+    {id: 10, subject: "Order", path: "/exerciseOrderPage"},
+    {id: 11, subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
+    {id: 12, subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
 ];
 
-export default function Homepage() {
+export default function HomePage() {
     return (
         <div className="max-w-screen-lg mx-auto px-4 py-8">
             <h1 className="text-4xl font-bold mb-6 text-center">
@@ -26,6 +30,14 @@ export default function Homepage() {
                 {EXERCISES.map((exerciseInfo: ExerciseInfo, idx: number) => (
                     <ExerciseCard key={idx} exerciseInfo={exerciseInfo} index={idx}/>
                 ))}
+            </div>
+            <div>
+                <h2 className="text-2xl font-semibold mt-4 text-center">
+                    In order to add more exercises (more pages), you need to do the following:
+                </h2>
+                <p>1. Create a new component page (preferable at .\client\src\pages).</p>
+                <p>2. Go to App.tsx (.\client\src\App.tsx) and add new component page to router.</p>
+                <p>3. Go to homePage.tsx (.\client\src\pages\homePage.tsx) and add the new page in EXERCISES const.</p>
             </div>
         </div>
     );

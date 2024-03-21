@@ -1,55 +1,75 @@
 import './App.css'
-import Homepage from "./pages/homepage.tsx";
+import HomePage from "./pages/homePage.tsx";
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Exercise1 from "./pages/exercise1.tsx";
-import Exercise2 from "./pages/exercise2.tsx";
-import Exercise3 from "./pages/exercise3.tsx";
-import Exercise4 from "./pages/exercise4.tsx";
-import Exercise5 from "./pages/exercise5.tsx";
-import Exercise6 from "./pages/exercise6.tsx";
-import Exercise7 from "./pages/exercise7.tsx";
+import ExerciseCounterPage from "./pages/exerciseCounterPage.tsx";
+import ExerciseInputTextPage from "./pages/exerciseInputTextPage.tsx";
+import ExerciseStatisticsPage from "./pages/exerciseStatisticsPage.tsx";
+import ExerciseKeyValuePage from "./pages/exerciseKeyValuePage.tsx";
+import ExerciseMemoryGamePage from "./pages/exerciseMemoryGamePage.tsx";
+import ExerciseRegisterPage from "./pages/exerciseRegisterPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import Exercise8 from "./pages/exercise8.tsx";
+import ExerciseLoginPage from "./pages/exerciseLoginPage.tsx";
+import ExerciseTodoListPage from "./pages/exerciseTodoListPage.tsx";
+import ExerciseButtonColorPage from "./pages/exerciseButtonColorPage.tsx";
+import ExerciseOptionsPage from "./pages/exerciseOptionsPage.tsx";
+import ExerciseTicTacToePage from "./pages/exerciseTicTacToePage.tsx";
+import ExerciseOrderPage from "./pages/exerciseOrderPage.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Homepage/>
+        element: <HomePage/>
     },
     {
-        path: "/exercise1",
-        element: <Exercise1/>
+        path: "/exerciseCounterPage",
+        element: <ExerciseCounterPage/>
     },
     {
-        path: "/exercise2",
-        element: <Exercise2/>
+        path: "/exerciseButtonColorPage",
+        element: <ExerciseButtonColorPage/>
     },
     {
-        path: "/exercise3",
-        element: <Exercise3/>
+        path: "/exerciseOptionsPage",
+        element: <ExerciseOptionsPage/>
     },
     {
-        path: "/exercise4",
-        element: <Exercise4/>
+        path: "/exerciseInputTextPage",
+        element: <ExerciseInputTextPage/>
     },
     {
-        path: "/exercise5",
-        element: <Exercise5/>
+        path: "/exerciseTodoListPage",
+        element: <ExerciseTodoListPage/>
     },
     {
-        path: "/exercise6",
-        element: <Exercise6/>
+        path: "/exerciseStatisticsPage",
+        element: <ExerciseStatisticsPage/>
     },
     {
-        path: "/exercise7",
-        element: <Exercise7/>
+        path: "/exerciseKeyValuePage",
+        element: <ExerciseKeyValuePage/>
     },
     {
-        path: "/exercise8",
-        element: <Exercise8/>
+        path: "/exerciseMemoryGamePage",
+        element: <ExerciseMemoryGamePage/>
+    },
+    {
+        path: "/exerciseOrderPage",
+        element: <ExerciseOrderPage/>
+    },
+    {
+        path: "/exerciseRegisterPage",
+        element: <ExerciseRegisterPage/>
+    },
+    {
+        path: "/exerciseLoginPage",
+        element: <ExerciseLoginPage/>
+    },
+    {
+        path: "/exerciseTicTacToePage",
+        element: <ExerciseTicTacToePage/>
     },
 ]);
 

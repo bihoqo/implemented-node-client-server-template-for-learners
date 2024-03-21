@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {isStringValidNumber} from "../utils/numbers.ts";
 
-export default function Exercise2() {
+export default function ExerciseInputTextPage() {
     const [inputTextValue, setInputTextValue] = useState("");
     const [inputNumberValue, setInputNumberValue] = useState("");
 
@@ -43,7 +43,7 @@ export default function Exercise2() {
                 />
             </div>
             <div className="max-w-md mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-4">Input Text: {inputNumberValue || 0}</h1>
+                <h1 className="text-3xl font-bold mb-4">Input Number: {inputNumberValue || 0}</h1>
                 <input
                     type="text"
                     className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500"

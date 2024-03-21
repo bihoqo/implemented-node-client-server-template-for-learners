@@ -6,7 +6,7 @@ import {UserResponse} from "../interfaces";
 import {useQuery} from "@tanstack/react-query";
 import {API_URL} from "../const";
 
-const Exercise7: React.FC = () => {
+const ExerciseRegisterPage: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         dateOfBirth: '',
@@ -237,4 +237,4 @@ function UserList({users}: UserListProps) {
     );
 }
 
-export default Exercise7;
+export default ExerciseRegisterPage;
