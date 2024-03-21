@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
+import {faker} from "@faker-js/faker";
 
 interface OrderFormState {
     name: string;
@@ -58,7 +59,7 @@ const ExerciseOrderPage: React.FC = () => {
         const newOrder: Order = {
             id: Math.floor(Math.random() * 100000), // Generate a random ID
             recipient: formState.name,
-            orderDetails: [...formState.toppings, "Bun"],
+            orderDetails: [...formState.toppings, "bun"],
             totalPrice: totalPrice,
         };
         setOrders([...orders, newOrder]);
@@ -66,6 +67,16 @@ const ExerciseOrderPage: React.FC = () => {
             name: "",
             weight: "100kg",
             toppings: [],
+        });
+    };
+
+    const fillFields = () => {
+        const randomToppings = ["pickle", "onion", "tomato", "lettuce", "sauce"].sort(() => Math.random() - 0.5).slice(0, 3);
+        const randomWeight = ["100kg", "200kg", "300kg"][Math.floor(Math.random() * 3)];
+        setFormState({
+            name: faker.person.fullName(),
+            weight: randomWeight,
+            toppings: randomToppings,
         });
     };
 
@@ -110,6 +121,10 @@ const ExerciseOrderPage: React.FC = () => {
 
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
                     Place Order
+                </button>
+                <button type="button" onClick={fillFields}
+                        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+                    Fill Fields
                 </button>
             </form>
             {orders.length > 0 && (
