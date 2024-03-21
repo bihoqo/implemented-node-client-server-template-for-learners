@@ -1,7 +1,9 @@
 import {useState, FormEvent, ChangeEvent} from "react";
 import {useNavigate} from "react-router-dom";
-import {sendLoginToServer} from "../requests/"
+import {fetchIsServerAlive, sendLoginToServer} from "../requests/"
 import useToken, {UserToken} from "../hooks/useToken";
+import {useQuery} from "@tanstack/react-query";
+import {API_URL} from "../const";
 
 interface LoginFormProps {
     onSubmit: (username: string, password: string) => void;
@@ -13,6 +15,27 @@ export default function Exercise8() {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(
         undefined
     );
+
+
+    const {
+        data: isServerOn,
+        isLoading: serverLoading,
+        isError: serverError,
+        refetch: refetchIsServerOn,
+    } = useQuery({
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        retry: false,
+        queryKey: ['serverStatus'],
+        queryFn: async (): Promise<boolean> => {
+            const res = await fetchIsServerAlive();
+            if (res.isErr()) {
+                setErrorMessage('');
+                return false;
+            }
+            return res.value;
+        },
+    });
 
     const handleLogin = async (username: string, password: string) => {
         // Add your login authentication logic here
@@ -32,6 +55,26 @@ export default function Exercise8() {
             setErrorMessage(result.error);
         }
     };
+
+    if (serverLoading) {
+        return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    }
+
+    if (serverError) {
+        return <div className="flex items-center justify-center h-screen text-red-500">{errorMessage}</div>;
+    }
+
+    if (!isServerOn) {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen">
+                <p className="mb-4 text-red-500">Server is not alive.</p>
+                <p className="mb-4 text-red-500">Do not forget to turn {API_URL}.</p>
+                <button onClick={() => refetchIsServerOn()}
+                        className="btn bg-blue-500 text-white hover:bg-blue-700 p-2 rounded-md">Retry
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div>

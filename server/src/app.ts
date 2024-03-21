@@ -14,8 +14,9 @@ export async function startExpressServer() {
 
     // Connect to db
     if (!DB_CONNECTION_URL) {
-        throw new Error(`DB_CONNECTION_URL is not defined, go to .env file and define it.
-        \nYou can try using ${DEFAULT_CONNECTION_URL}.`);
+        console.error(`\x1b[31mDB_CONNECTION_URL is not defined, go to .env file and define it.
+        You can try using ${DEFAULT_CONNECTION_URL}.\x1b[0m`);
+        return;
     }
     await mongoose.connect(DB_CONNECTION_URL, {});
 
