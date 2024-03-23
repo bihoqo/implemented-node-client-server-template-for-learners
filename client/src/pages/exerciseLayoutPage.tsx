@@ -188,35 +188,69 @@ function generateRandomRows(numberOfRows: number): RowData[] {
 }
 
 function LayoutExample3() {
-    const rows: RowData[] = generateRandomRows(10);
+    const [numberOfRowsToShow, setNumberOfRowsToShow] = useState<number>(10);
+    const [rows, setRows] = useState<RowData[]>(generateRandomRows(10));
+
+    function refreshData() {
+        setRows(generateRandomRows(numberOfRowsToShow));
+    }
+
+    function addMoreData() {
+        setNumberOfRowsToShow(numberOfRowsToShow + 5);
+        setRows([...rows, ...generateRandomRows(5)]);
+    }
+
+    function removeAllRows() {
+        setNumberOfRowsToShow(0);
+        setRows([]);
+    }
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="flex flex-col justify-center mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4 text-center">Table Example</h1>
-            <div className="grid grid-cols-[10fr_5fr_5fr_3fr_4fr_6fr_6fr_6fr]">
+            <div className="grid grid-cols-[1fr_10fr_5fr_5fr_3fr_4fr_6fr_6fr_6fr] gap-2">
                 {/* Table Header */}
-                <div className="bg-gray-200 py-2 px-4">ID</div>
-                <div className="bg-gray-200 py-2 px-4">First Name</div>
-                <div className="bg-gray-200 py-2 px-4">Last Name</div>
-                <div className="bg-gray-200 py-2 px-4">Sex</div>
-                <div className="bg-gray-200 py-2 px-4">Birth Date</div>
-                <div className="bg-gray-200 py-2 px-4">Street</div>
-                <div className="bg-gray-200 py-2 px-4">City</div>
-                <div className="bg-gray-200 py-2 px-4">Country</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">Index</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">ID</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">First Name</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">Last Name</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">Sex</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">Birth Date</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">Street</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">City</div>
+                <div className="bg-gray-200 py-2 px-4 text-center">Country</div>
 
                 {/* Table Rows */}
-                {rows.map((row, index) => (
-                    <React.Fragment key={index}>
-                        <div className="bg-white py-2 px-4">{row.id}</div>
-                        <div className="bg-white py-2 px-4">{row.firstName}</div>
-                        <div className="bg-white py-2 px-4">{row.lastName}</div>
-                        <div className="bg-white py-2 px-4">{row.sex}</div>
-                        <div className="bg-white py-2 px-4">{row.birthDate.toLocaleDateString()}</div>
-                        <div className="bg-white py-2 px-4">{row.street}</div>
-                        <div className="bg-white py-2 px-4">{row.city}</div>
-                        <div className="bg-white py-2 px-4">{row.country}</div>
+                {rows.map((row, idx) => (
+                    <React.Fragment key={row.id}>
+                        <div className="bg-white py-2 px-4 text-center">{idx}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.id}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.firstName}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.lastName}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.sex}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.birthDate.toLocaleDateString()}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.street}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.city}</div>
+                        <div className="bg-white py-2 px-4 text-center">{row.country}</div>
                     </React.Fragment>
                 ))}
+            </div>
+            <div className="flex flex-row gap-2 justify-center items-center mt-8">
+                <button
+                    onClick={refreshData}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300 hover:bg-blue-600">
+                    Refresh Data
+                </button>
+                <button
+                    onClick={addMoreData}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300 hover:bg-blue-600">
+                    Add More
+                </button>
+                <button
+                    onClick={removeAllRows}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300 hover:bg-blue-600">
+                    Remove All
+                </button>
             </div>
         </div>
     );
@@ -227,7 +261,7 @@ function LayoutExample4() {
         <div className="flex flex-col min-h-screen">
             {/* Navbar */}
             <nav className="bg-gray-800 text-white py-4 px-8 flex justify-between items-center">
-                <div className="text-2xl font-bold">Logo</div>
+            <div className="text-2xl font-bold">Logo</div>
                 <ul className="flex gap-6">
                     <li><a href="#" className="hover:underline">Home</a></li>
                     <li><a href="#" className="hover:underline">About</a></li>
