@@ -5,16 +5,17 @@ import {COLORS} from "../const/colors.ts";
 const EXERCISES: ExerciseInfo[] = [
     {id: 1, subject: "Counter", path: "/exerciseCounterPage"},
     {id: 2, subject: "Button color changes", path: "/exerciseButtonColorPage"},
-    {id: 3, subject: "Options", path: "/exerciseOptionsPage"},
-    {id: 4, subject: "Input Text", path: "/exerciseInputTextPage"},
-    {id: 5, subject: "Todo list", path: "/exerciseTodoListPage"},
-    {id: 6, subject: "Student Statistics", path: "/exerciseStudentStatisticsPage"},
-    {id: 7, subject: "Key value", path: "/exerciseKeyValuePage"},
-    {id: 8, subject: "Memory game", path: "/exerciseMemoryGamePage"},
-    {id: 9, subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
-    {id: 10, subject: "Order", path: "/exerciseOrderPage"},
-    {id: 11, subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
-    {id: 12, subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
+    {id: 2, subject: "Layout", path: "/exerciseLayoutPage"},
+    {id: 4, subject: "Options", path: "/exerciseOptionsPage"},
+    {id: 5, subject: "Input Text", path: "/exerciseInputTextPage"},
+    {id: 6, subject: "Todo list", path: "/exerciseTodoListPage"},
+    {id: 7, subject: "Student Statistics", path: "/exerciseStudentStatisticsPage"},
+    {id: 8, subject: "Key value", path: "/exerciseKeyValuePage"},
+    {id: 9, subject: "Memory game", path: "/exerciseMemoryGamePage"},
+    {id: 10, subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
+    {id: 11, subject: "Order", path: "/exerciseOrderPage"},
+    {id: 12, subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
+    {id: 13, subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
 ];
 
 export default function HomePage() {

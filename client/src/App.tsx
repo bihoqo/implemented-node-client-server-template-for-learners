@@ -17,6 +17,7 @@ import ExerciseButtonColorPage from "./pages/exerciseButtonColorPage.tsx";
 import ExerciseOptionsPage from "./pages/exerciseOptionsPage.tsx";
 import ExerciseTicTacToePage from "./pages/exerciseTicTacToePage.tsx";
 import ExerciseOrderPage from "./pages/exerciseOrderPage.tsx";
+import ExerciseLayoutPage from "./pages/exerciseLayoutPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
     {
         path: "/exerciseButtonColorPage",
         element: <ExerciseButtonColorPage/>
+    },
+    {
+        path: "/exerciseLayoutPage",
+        element: <ExerciseLayoutPage/>
     },
     {
         path: "/exerciseOptionsPage",
