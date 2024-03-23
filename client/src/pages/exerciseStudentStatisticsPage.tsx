@@ -1,8 +1,10 @@
 import {ChangeEvent, useState} from "react";
 import clsx from "clsx";
 import {faker} from "@faker-js/faker";
+import {shortenId} from "../utils/strings.ts";
 
 interface Student {
+    id: string;
     name: string;
     age: number;
     grades: {
@@ -21,9 +23,10 @@ interface Statistics {
     youngestStudent: Student | null;
 }
 
-export default function ExerciseStatisticsPage() {
+export default function ExerciseStudentStatisticsPage() {
     const [students, setStudents] = useState<Student[]>([]);
     const [studentInputForm, setStudentInputForm] = useState<Student>({
+        id: faker.string.uuid(),
         name: "",
         age: 0,
         grades: {math: 0, english: 0, science: 0},
@@ -47,6 +50,11 @@ export default function ExerciseStatisticsPage() {
         }));
     };
 
+    const resetForm = () => {
+        // use faker to generate a new unique id
+        setStudentInputForm({id: faker.string.uuid(), name: "", age: 0, grades: {math: 0, english: 0, science: 0}});
+    }
+
     const addStudent = (newStudent: Student) => {
         const existingStudentIndex = students.findIndex(student => student.name === newStudent.name);
         if (existingStudentIndex !== -1) {
@@ -56,16 +64,17 @@ export default function ExerciseStatisticsPage() {
         } else {
             setStudents([...students, newStudent]);
         }
-        setStudentInputForm({ name: "", age: 0, grades: { math: 0, english: 0, science: 0 } }); // Reset form
+        resetForm(); // Reset form
     };
 
     const addStudentButtonClickHandler = () => {
         addStudent(studentInputForm);
-        setStudentInputForm({name: "", age: 0, grades: {math: 0, english: 0, science: 0}}); // Reset form
+        resetForm(); // Reset form
     };
 
     const addRandomStudentButtonClickHandler = () => {
         const randomStudent: Student = {
+            id: faker.string.uuid(),
             name: faker.person.fullName(),
             age: Math.floor(Math.random() * 18) + 12,
             grades: {
@@ -77,12 +86,12 @@ export default function ExerciseStatisticsPage() {
         addStudent(randomStudent);
     };
 
-    const editStudent = (index: number) => {
+    const editStudentButtonClickHandler = (index: number) => {
         const student = students[index];
         setStudentInputForm(student);
     }
 
-    const deleteStudent = (index: number) => {
+    const deleteStudentButtonClickHandler = (index: number) => {
         const updatedStudents = [...students];
         updatedStudents.splice(index, 1);
         setStudents(updatedStudents);
@@ -93,6 +102,20 @@ export default function ExerciseStatisticsPage() {
         <div className="max-w-4xl mx-auto p-5">
             <h2 className="text-2xl font-semibold text-center text-blue-600 mb-6">Add Student</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                        Id
+                    </label>
+                    <input
+                        disabled={true}
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={studentInputForm.id}
+                        placeholder="Id"
+                        className="input input-bordered w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-amber-100 opacity-50"
+                    />
+                </div>
                 <div>
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                         Name
@@ -180,8 +203,8 @@ export default function ExerciseStatisticsPage() {
             <h2 className="text-2xl font-semibold text-center text-blue-600 my-6">Students</h2>
             <div className="flex flex-row flex-wrap gap-2">
                 {students.map((student, index) => {
-                    return <StudentCard key={student.name} student={student} editStudent={editStudent}
-                                        deleteStudent={deleteStudent}
+                    return <StudentCard key={student.name} student={student} editStudent={editStudentButtonClickHandler}
+                                        deleteStudent={deleteStudentButtonClickHandler}
                                         index={index}/>
                 })}
             </div>
@@ -204,6 +227,9 @@ export function StudentCard({student, index, editStudent, deleteStudent}: Studen
         <div className="border border-gray-200 p-4 rounded-lg shadow-md mb-4 relative bg-white">
             <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg font-semibold text-blue-600">{student.name}</h3>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+                <h3 className="text-sm text-gray-700-600">Id: {shortenId(student.id)}</h3>
             </div>
             <p className="mb-2 text-gray-700">Age: {student.age}</p>
             <p className="mb-2 text-gray-700">Math: {student.grades.math}</p>

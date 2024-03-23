@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import ExerciseCounterPage from "./pages/exerciseCounterPage.tsx";
 import ExerciseInputTextPage from "./pages/exerciseInputTextPage.tsx";
-import ExerciseStatisticsPage from "./pages/exerciseStatisticsPage.tsx";
+import ExerciseStudentStatisticsPage from "./pages/exerciseStudentStatisticsPage.tsx";
 import ExerciseKeyValuePage from "./pages/exerciseKeyValuePage.tsx";
 import ExerciseMemoryGamePage from "./pages/exerciseMemoryGamePage.tsx";
 import ExerciseRegisterPage from "./pages/exerciseRegisterPage.tsx";
@@ -44,8 +44,8 @@ const router = createBrowserRouter([
         element: <ExerciseTodoListPage/>
     },
     {
-        path: "/exerciseStatisticsPage",
-        element: <ExerciseStatisticsPage/>
+        path: "/exerciseStudentStatisticsPage",
+        element: <ExerciseStudentStatisticsPage/>
     },
     {
         path: "/exerciseKeyValuePage",

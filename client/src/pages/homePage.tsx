@@ -8,7 +8,7 @@ const EXERCISES: ExerciseInfo[] = [
     {id: 3, subject: "Options", path: "/exerciseOptionsPage"},
     {id: 4, subject: "Input Text", path: "/exerciseInputTextPage"},
     {id: 5, subject: "Todo list", path: "/exerciseTodoListPage"},
-    {id: 6, subject: "Statistics", path: "/exerciseStatisticsPage"},
+    {id: 6, subject: "Student Statistics", path: "/exerciseStudentStatisticsPage"},
     {id: 7, subject: "Key value", path: "/exerciseKeyValuePage"},
     {id: 8, subject: "Memory game", path: "/exerciseMemoryGamePage"},
     {id: 9, subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
