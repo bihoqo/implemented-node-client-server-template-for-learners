@@ -258,7 +258,11 @@ function LayoutExample4() {
 }
 
 function LayoutExample5() {
-    const rowData: RowData = generateRowData();
+    const [rowData, setRowData] = useState<RowData>(generateRowData());
+
+    function refreshData() {
+        setRowData(generateRowData());
+    }
 
     const keyValueData = [
         {key: "ID", value: shortenId(rowData.id)},
@@ -275,17 +279,22 @@ function LayoutExample5() {
     ];
 
     return (
-        <div className="flex flex-col bg-[#0b0c13] w-fit p-2">
-            <div className="">
+        <div className="flex flex-col gap-4 justify-center w-[300px]">
+            <div className="flex flex-col bg-[#0b0c13] w-full p-3 rounded-md shadow-2xl">
                 {keyValueData.map((item, index) => {
                     return (
                         <span className="flex flex-row items-center justify-between gap-4" key={index}>
-                            <span className="text-white/50">{item.key}</span>
-                            <span className="font-semibold text-white">{item.value}</span>
+                            <span className="font-medium text-white/50 whitespace-nowrap">{item.key}</span>
+                            <span className="font-semibold text-white whitespace-nowrap overflow-hidden overflow-ellipsis">{item.value}</span>
                         </span>
                     );
                 })}
             </div>
+            <button
+                onClick={refreshData}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300 hover:bg-blue-600">
+                Refresh Data
+            </button>
         </div>
     );
 }
