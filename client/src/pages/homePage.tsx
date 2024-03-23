@@ -49,10 +49,10 @@ function ExerciseCard({exerciseInfo, index}: { exerciseInfo: ExerciseInfo; index
 
 
     // Get the color for the current exercise based on its index
-    const color = COLORS[index % COLORS.length];
+    const colorStyle = COLORS[index % COLORS.length];
 
     return (
-        <div className={clsx("rounded-lg shadow-lg p-4", color)}>
+        <div className={clsx("rounded-lg shadow-lg p-4", colorStyle)}>
             <h2 className="text-xl font-bold mb-2 text-center">Exercise {exerciseInfo.id}</h2>
             <h2 className="text-lg font-bold mb-2 text-center">{exerciseInfo.subject}</h2>
             <a
