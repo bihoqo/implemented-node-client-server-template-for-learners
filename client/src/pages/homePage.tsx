@@ -3,19 +3,20 @@ import clsx from "clsx";
 import {COLORS} from "../const/colors.ts";
 
 const EXERCISES: ExerciseInfo[] = [
-    {id: 1, subject: "Counter", path: "/exerciseCounterPage"},
-    {id: 2, subject: "Button color changes", path: "/exerciseButtonColorPage"},
-    {id: 2, subject: "Layout", path: "/exerciseLayoutPage"},
-    {id: 4, subject: "Options", path: "/exerciseOptionsPage"},
-    {id: 5, subject: "Input Text", path: "/exerciseInputTextPage"},
-    {id: 6, subject: "Todo list", path: "/exerciseTodoListPage"},
-    {id: 7, subject: "Student Statistics", path: "/exerciseStudentStatisticsPage"},
-    {id: 8, subject: "Key value", path: "/exerciseKeyValuePage"},
-    {id: 9, subject: "Memory game", path: "/exerciseMemoryGamePage"},
-    {id: 10, subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
-    {id: 11, subject: "Order", path: "/exerciseOrderPage"},
-    {id: 12, subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
-    {id: 13, subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
+    {subject: "Counter", path: "/exerciseCounterPage"},
+    {subject: "Button color changes", path: "/exerciseButtonColorPage"},
+    {subject: "Layout", path: "/exerciseLayoutPage"},
+    {subject: "Options", path: "/exerciseOptionsPage"},
+    {subject: "Include", path: "/exerciseIncludePage"},
+    {subject: "Input Text", path: "/exerciseInputTextPage"},
+    {subject: "Todo list", path: "/exerciseTodoListPage"},
+    {subject: "Student Statistics", path: "/exerciseStudentStatisticsPage"},
+    {subject: "Key value", path: "/exerciseKeyValuePage"},
+    {subject: "Memory game", path: "/exerciseMemoryGamePage"},
+    {subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
+    {subject: "Order", path: "/exerciseOrderPage"},
+    {subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
+    {subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
 ];
 
 export default function HomePage() {
@@ -53,7 +54,7 @@ function ExerciseCard({exerciseInfo, index}: { exerciseInfo: ExerciseInfo; index
 
     return (
         <div className={clsx("rounded-lg shadow-lg p-4", colorStyle)}>
-            <h2 className="text-xl font-bold mb-2 text-center">Exercise {exerciseInfo.id}</h2>
+            <h2 className="text-xl font-bold mb-2 text-center">Exercise {index + 1}</h2>
             <h2 className="text-lg font-bold mb-2 text-center">{exerciseInfo.subject}</h2>
             <a
                 href={exerciseInfo.path}

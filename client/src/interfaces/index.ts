@@ -1,6 +1,5 @@
 export interface ExerciseInfo {
     path: string
-    id: number;
     subject: string
 }
 
