@@ -52,7 +52,8 @@ export default function ExerciseLayoutPage() {
                     return (
                         <div key={example} className="section-container rounded-lg p-4">
                             <button onClick={() => showExample(example)}
-                                    className="text-blue-600 bg-white hover:bg-blue-600 hover:text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300">
+                                    className={clsx("text-blue-600 hover:text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300",
+                                        selectedExample === example ? "bg-blue-500 hover:bg-blue-400 text-white" : "bg-white hover:bg-blue-600 ")}>
                                 {example}
                             </button>
                         </div>
@@ -261,7 +262,7 @@ function LayoutExample4() {
         <div className="flex flex-col min-h-screen">
             {/* Navbar */}
             <nav className="bg-gray-800 text-white py-4 px-8 flex justify-between items-center">
-            <div className="text-2xl font-bold">Logo</div>
+                <div className="text-2xl font-bold">Logo</div>
                 <ul className="flex gap-6">
                     <li><a href="#" className="hover:underline">Home</a></li>
                     <li><a href="#" className="hover:underline">About</a></li>
