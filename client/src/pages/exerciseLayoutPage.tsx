@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {faker} from "@faker-js/faker";
 import {shortenId} from "../utils/strings.ts";
+import {returnPNLColor, returnPNLString} from "../utils/numbers.ts";
+import clsx from "clsx";
 
 enum LayoutExampleOption {
     Example1 = "Flex1",
@@ -8,6 +10,7 @@ enum LayoutExampleOption {
     Example3 = "Grid1",
     Example4 = "Navbar",
     Example5 = "KeyValue",
+    Example6 = "KeyValue2",
 }
 
 export default function ExerciseLayoutPage() {
@@ -29,6 +32,8 @@ export default function ExerciseLayoutPage() {
                 return <LayoutExample4/>;
             case LayoutExampleOption.Example5:
                 return <LayoutExample5/>;
+            case LayoutExampleOption.Example6:
+                return <LayoutExample6/>;
             default:
                 return null;
         }
@@ -285,7 +290,90 @@ function LayoutExample5() {
                     return (
                         <span className="flex flex-row items-center justify-between gap-4" key={index}>
                             <span className="font-medium text-white/50 whitespace-nowrap">{item.key}</span>
-                            <span className="font-semibold text-white whitespace-nowrap overflow-hidden overflow-ellipsis">{item.value}</span>
+                            <span
+                                className="font-semibold text-white whitespace-nowrap overflow-hidden overflow-ellipsis">{item.value}</span>
+                        </span>
+                    );
+                })}
+            </div>
+            <button
+                onClick={refreshData}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300 hover:bg-blue-600">
+                Refresh Data
+            </button>
+        </div>
+    );
+}
+
+function generateRowWithPnls() {
+    return {
+        id: faker.string.uuid(),
+        fullName: faker.person.fullName(),
+        Pnl1: Number(faker.finance.amount({min: -1000, max: 1000})),
+        Pnl2: Number(faker.finance.amount({min: -1000, max: 1000})),
+        Pnl3: Number(faker.finance.amount({min: -1000, max: 1000})),
+        Pnl4: Number(faker.finance.amount({min: -1000, max: 1000})),
+        Pnl5: Number(faker.finance.amount({min: -1000, max: 1000})),
+    };
+}
+
+function LayoutExample6() {
+    const [rowData, setRowData] = useState(generateRowWithPnls());
+
+    function refreshData() {
+        setRowData(generateRowWithPnls());
+    }
+
+    const keyValueData = [
+        {key: "ID", value: shortenId(rowData.id)},
+        {key: "Full Name", value: rowData.fullName},
+        {
+            key: "Pnl 1", value: (
+                <span className={clsx(returnPNLColor(rowData.Pnl1))}>
+                    {returnPNLString(rowData.Pnl1)}
+                </span>
+            )
+        },
+        {
+            key: "Pnl 2", value: (
+                <span className={clsx(returnPNLColor(rowData.Pnl2))}>
+                    {returnPNLString(rowData.Pnl2)}
+                </span>
+            )
+        },
+        {
+            key: "Pnl 3", value: (
+                <span className={clsx(returnPNLColor(rowData.Pnl3))}>
+                    {returnPNLString(rowData.Pnl3)}
+                </span>
+            )
+        },
+        {
+            key: "Pnl 4", value: (
+                <span className={clsx(returnPNLColor(rowData.Pnl4))}>
+                    {returnPNLString(rowData.Pnl4)}
+                </span>
+            )
+        },
+        {
+            key: "Pnl 5", value: (
+                <span className={clsx(returnPNLColor(rowData.Pnl5))}>
+                    {returnPNLString(rowData.Pnl5)}
+                </span>
+            )
+        },
+    ];
+
+    return (
+        <div className="flex flex-col gap-4 justify-center w-[300px]">
+            <div className="flex flex-col bg-[#0b0c13] w-full p-3 rounded-md shadow-2xl">
+                {keyValueData.map((item, index) => {
+                    return (
+                        <span className="flex flex-row items-center justify-between gap-4" key={index}>
+                            <span className="font-medium text-white/50 whitespace-nowrap">{item.key}</span>
+                            <span
+                                className="font-semibold text-white whitespace-nowrap overflow-hidden overflow-ellipsis">{item.value}
+                            </span>
                         </span>
                     );
                 })}
