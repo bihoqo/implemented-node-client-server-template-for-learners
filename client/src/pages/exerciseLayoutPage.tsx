@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {faker} from "@faker-js/faker";
+import {shortenId} from "../utils/strings.ts";
 
 enum LayoutExampleOption {
     Example1 = "Flex1",
     Example2 = "Flex2",
     Example3 = "Grid1",
     Example4 = "Navbar",
+    Example5 = "KeyValue",
 }
 
 export default function ExerciseLayoutPage() {
@@ -25,6 +27,8 @@ export default function ExerciseLayoutPage() {
                 return <LayoutExample3/>;
             case LayoutExampleOption.Example4:
                 return <LayoutExample4/>;
+            case LayoutExampleOption.Example5:
+                return <LayoutExample5/>;
             default:
                 return null;
         }
@@ -141,8 +145,8 @@ function LayoutExample2() {
 }
 
 interface RowData {
-    id: number;
-    name: string;
+    index: number;
+    id: string;
     firstName: string;
     lastName: string;
     sex: string;
@@ -155,10 +159,10 @@ interface RowData {
     buildingNumber: string;
 }
 
-function generateRandomRows(numberOfRows: number): RowData[] {
-    return Array.from({length: numberOfRows}, (_, idx: number) => ({
-        id: idx + 1,
-        name: `Row ${idx + 1}`,
+function generateRowData(index: number = 0): RowData {
+    return {
+        index: index,
+        id: faker.string.uuid(),
         firstName: faker.person.firstName(),
         lastName: faker.person.lastName(),
         sex: faker.person.sex(),
@@ -169,7 +173,13 @@ function generateRandomRows(numberOfRows: number): RowData[] {
         country: faker.location.county(),
         street: faker.location.street(),
         buildingNumber: faker.location.buildingNumber(),
-    }));
+    };
+}
+
+function generateRandomRows(numberOfRows: number): RowData[] {
+    return Array.from({length: numberOfRows}, (_, idx: number) => {
+        return generateRowData(idx);
+    });
 }
 
 function LayoutExample3() {
@@ -195,8 +205,8 @@ function LayoutExample3() {
                 {/* Rows */}
                 {rows.map(row => (
                     <React.Fragment key={row.id}>
+                        <div className="bg-white py-2 px-4">{row.index}</div>
                         <div className="bg-white py-2 px-4">{row.id}</div>
-                        <div className="bg-white py-2 px-4">{row.name}</div>
                         <div className="bg-white py-2 px-4">{row.firstName}</div>
                         <div className="bg-white py-2 px-4">{row.lastName}</div>
                         <div className="bg-white py-2 px-4">{row.sex}</div>
@@ -231,13 +241,51 @@ function LayoutExample4() {
             {/* Main Content */}
             <div className="flex-1 bg-gray-200 p-8">
                 <h1 className="text-3xl font-bold mb-6">Main Content</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur velit id ex volutpat, nec feugiat magna finibus. Sed aliquet tellus sit amet nisl vehicula, eu viverra nisi posuere. Proin eu felis id ipsum tempus efficitur. Mauris varius nibh sit amet justo facilisis, id facilisis justo fermentum. Integer nec tellus ligula. Sed id commodo risus. Morbi nec massa at lorem condimentum sodales ut eget purus. Donec at velit eget lacus gravida cursus. In vitae ipsum et velit congue pretium ac nec nunc.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur velit id ex volutpat,
+                    nec feugiat magna finibus. Sed aliquet tellus sit amet nisl vehicula, eu viverra nisi posuere. Proin
+                    eu felis id ipsum tempus efficitur. Mauris varius nibh sit amet justo facilisis, id facilisis justo
+                    fermentum. Integer nec tellus ligula. Sed id commodo risus. Morbi nec massa at lorem condimentum
+                    sodales ut eget purus. Donec at velit eget lacus gravida cursus. In vitae ipsum et velit congue
+                    pretium ac nec nunc.</p>
             </div>
 
             {/* Footer */}
             <footer className="bg-gray-800 text-white py-4 px-8 text-center">
                 &copy; 2024 Company Name. All rights reserved.
             </footer>
+        </div>
+    );
+}
+
+function LayoutExample5() {
+    const rowData: RowData = generateRowData();
+
+    const keyValueData = [
+        {key: "ID", value: shortenId(rowData.id)},
+        {key: "First Name", value: rowData.firstName},
+        {key: "Last Name", value: rowData.lastName},
+        {key: "Sex", value: rowData.sex},
+        {key: "Birth Date", value: rowData.birthDate.toLocaleDateString()},
+        {key: "Working At", value: rowData.workingAt},
+        {key: "Finance", value: `$${rowData.finance}`},
+        {key: "City", value: rowData.city},
+        {key: "Country", value: rowData.country},
+        {key: "Street", value: rowData.street},
+        {key: "Building Number", value: rowData.buildingNumber},
+    ];
+
+    return (
+        <div className="flex flex-col bg-[#0b0c13] w-fit p-2">
+            <div className="">
+                {keyValueData.map((item, index) => {
+                    return (
+                        <span className="flex flex-row items-center justify-between gap-4" key={index}>
+                            <span className="text-white/50">{item.key}</span>
+                            <span className="font-semibold text-white">{item.value}</span>
+                        </span>
+                    );
+                })}
+            </div>
         </div>
     );
 }
