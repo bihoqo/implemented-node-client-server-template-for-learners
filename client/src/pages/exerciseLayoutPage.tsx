@@ -5,6 +5,7 @@ enum LayoutExampleOption {
     Example1 = "Flex1",
     Example2 = "Flex2",
     Example3 = "Grid1",
+    Example4 = "Navbar",
 }
 
 export default function ExerciseLayoutPage() {
@@ -22,6 +23,8 @@ export default function ExerciseLayoutPage() {
                 return <LayoutExample2/>;
             case LayoutExampleOption.Example3:
                 return <LayoutExample3/>;
+            case LayoutExampleOption.Example4:
+                return <LayoutExample4/>;
             default:
                 return null;
         }
@@ -207,6 +210,34 @@ function LayoutExample3() {
                     </React.Fragment>
                 ))}
             </div>
+        </div>
+    );
+}
+
+function LayoutExample4() {
+    return (
+        <div className="flex flex-col min-h-screen">
+            {/* Navbar */}
+            <nav className="bg-gray-800 text-white py-4 px-8 flex justify-between items-center">
+                <div className="text-2xl font-bold">Logo</div>
+                <ul className="flex gap-6">
+                    <li><a href="#" className="hover:underline">Home</a></li>
+                    <li><a href="#" className="hover:underline">About</a></li>
+                    <li><a href="#" className="hover:underline">Services</a></li>
+                    <li><a href="#" className="hover:underline">Contact</a></li>
+                </ul>
+            </nav>
+
+            {/* Main Content */}
+            <div className="flex-1 bg-gray-200 p-8">
+                <h1 className="text-3xl font-bold mb-6">Main Content</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur velit id ex volutpat, nec feugiat magna finibus. Sed aliquet tellus sit amet nisl vehicula, eu viverra nisi posuere. Proin eu felis id ipsum tempus efficitur. Mauris varius nibh sit amet justo facilisis, id facilisis justo fermentum. Integer nec tellus ligula. Sed id commodo risus. Morbi nec massa at lorem condimentum sodales ut eget purus. Donec at velit eget lacus gravida cursus. In vitae ipsum et velit congue pretium ac nec nunc.</p>
+            </div>
+
+            {/* Footer */}
+            <footer className="bg-gray-800 text-white py-4 px-8 text-center">
+                &copy; 2024 Company Name. All rights reserved.
+            </footer>
         </div>
     );
 }
