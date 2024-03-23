@@ -127,7 +127,7 @@ function Example2() {
             {/* Display selected options */}
             <div className="flex flex-col justify-center items-center mt-6">
                 <p className="text-lg font-semibold">Selected Checkboxes:</p>
-                <p>{Object.entries(checkboxValues).filter(([key, value]) => value).map(([key]) => key).join(', ')}</p>
+                <p>{Object.entries(checkboxValues).filter(([, value]) => value).map(([key]) => key).join(', ')}</p>
                 <p className="text-lg font-semibold mt-4">Selected Radio Button:</p>
                 <p>{selectedRadioButton || 'None'}</p>
             </div>
