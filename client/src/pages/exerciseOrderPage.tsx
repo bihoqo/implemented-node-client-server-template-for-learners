@@ -65,6 +65,7 @@ const ExerciseOrderPage: React.FC = () => {
                 </div>
             </div>
             <RecipientStatistics orders={orders}/>
+            <OrderStatistics orders={orders}/>
         </div>
     );
 };
@@ -214,7 +215,7 @@ const OrdersList = ({orders}: OrdersListProps) => {
         <div>
             {/* Render the orders div */}
             <div className={clsx("rounded-lg p-4 bg-orange-100 shadow-md", {"hidden": orders.length === 0})}>
-                <h1 className="text-2xl font-bold mb-4">Recent Orders:</h1>
+                <h1 className="text-2xl font-bold mb-4">Recent Orders ({orders.length}):</h1>
                 <div className="flex flex-row flex-wrap gap-2">
                     {orders.map((order) => (
                         <OrderSummary key={order.id} order={order}/>
@@ -256,7 +257,7 @@ const RecipientStatistics = ({orders}: { orders: Order[] }) => {
 
     return (
         <div className="w-2/4 mb-8">
-            <h1 className="text-2xl font-bold mb-4">Recipient Statistics:</h1>
+            <h1 className="text-2xl font-bold mb-4">Recipient ({recipients.length}):</h1>
             <div className="flex flex-wrap gap-2">
                 {/* Render buttons for each recipient */}
                 {recipients.map((recipient) => (
@@ -282,7 +283,7 @@ interface RecipientStatsProps {
     orders: Order[];
 }
 
-const RecipientStats = ({recipient, orders}: RecipientStatsProps) => {
+const RecipientStats = ({ recipient, orders }: RecipientStatsProps) => {
     const recipientOrders = orders.filter((order) => order.recipient === recipient);
     const totalSpent = recipientOrders.reduce((acc, order) => acc + order.totalPrice, 0);
     const totalOrders = recipientOrders.length;
@@ -292,6 +293,30 @@ const RecipientStats = ({recipient, orders}: RecipientStatsProps) => {
             <h2 className="text-lg font-semibold mb-2">Recipient: {recipient}</h2>
             <p>Total Orders: {totalOrders}</p>
             <p>Total Spent: ${totalSpent.toFixed(2)}</p>
+            <div className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">Order IDs:</h3>
+                <ul className="list-disc pl-4">
+                    {/* Iterate over recipientOrders to display each order ID */}
+                    {recipientOrders.map((order) => (
+                        <li key={order.id}>{order.id}</li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+};
+
+const OrderStatistics = ({orders}: { orders: Order[] }) => {
+    const totalOrders = orders.length;
+    const totalSpent = orders.reduce((acc, order) => acc + order.totalPrice, 0);
+    const numberOfRecipients = Array.from(new Set(orders.map((order) => order.recipient))).length;
+
+    return (
+        <div className="w-2/4 mb-8 rounded-lg shadow-md p-4 bg-red-100">
+            <h1 className="text-2xl font-bold mb-4">Order Statistics:</h1>
+            <p>Total Orders: {totalOrders}</p>
+            <p>Total Spent: ${totalSpent.toFixed(2)}</p>
+            <p>Number of recipients: {numberOfRecipients}</p>
         </div>
     );
 }
