@@ -1,10 +1,25 @@
 import React, {useState} from "react";
 import {faker} from "@faker-js/faker";
+import clsx from "clsx";
+
+enum ToppingOption {
+    PICKLE = "pickle",
+    ONION = "onion",
+    TOMATO = "tomato",
+    LETTUCE = "lettuce",
+    SAUCE = "sauce"
+}
+
+enum WeightOption {
+    "100kg" = "100kg",
+    "200kg" = "200kg",
+    "300kg" = "300kg"
+}
 
 interface OrderFormState {
     name: string;
-    weight: string;
-    toppings: string[];
+    weight: WeightOption;
+    toppings: ToppingOption[];
 }
 
 interface Order {
@@ -14,26 +29,26 @@ interface Order {
     totalPrice: number;
 }
 
-const toppingPrices: { [topping: string]: number } = {
-    pickle: 0.5,
-    onion: 0.3,
-    tomato: 0.4,
-    lettuce: 0.2,
-    sauce: 0.6,
+const TOPPING_PRICES: { [topping in ToppingOption]: number } = {
+    [ToppingOption.PICKLE]: 0.5,
+    [ToppingOption.ONION]: 0.3,
+    [ToppingOption.TOMATO]: 0.4,
+    [ToppingOption.LETTUCE]: 0.2,
+    [ToppingOption.SAUCE]: 0.6,
 };
 
-const weightPrices: { [weight: string]: number } = {
-    "100kg": 5.99,
-    "200kg": 8.99,
-    "300kg": 11.99,
+const WEIGHT_PRICES: { [weight in WeightOption]: number } = {
+    [WeightOption["100kg"]]: 5.99,
+    [WeightOption["200kg"]]: 8.99,
+    [WeightOption["300kg"]]: 11.99,
 };
 
-const bunPrice = 1.5; // Price for the bun
+const BUN_PRICE = 1.5; // Price for the bun
 
 const ExerciseOrderPage: React.FC = () => {
     const [formState, setFormState] = useState<OrderFormState>({
         name: "",
-        weight: "100kg",
+        weight: WeightOption["100kg"],
         toppings: [],
     });
     const [orders, setOrders] = useState<Order[]>([]);
@@ -45,17 +60,19 @@ const ExerciseOrderPage: React.FC = () => {
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {value, checked} = e.target;
+        const toppingOption: ToppingOption = value as ToppingOption; // Convert value to ToppingOption enum type
         if (checked) {
-            setFormState({...formState, toppings: [...formState.toppings, value]});
+            setFormState({...formState, toppings: [...formState.toppings, toppingOption]});
         } else {
-            setFormState({...formState, toppings: formState.toppings.filter((t) => t !== value)});
+            setFormState({...formState, toppings: formState.toppings.filter((t) => t !== toppingOption)});
         }
     };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const totalPrice =
-            bunPrice + weightPrices[formState.weight] + formState.toppings.reduce((acc, topping) => acc + toppingPrices[topping], 0);
+            BUN_PRICE + WEIGHT_PRICES[formState.weight] + formState.toppings.reduce((acc, topping) => acc + TOPPING_PRICES[topping], 0);
         const newOrder: Order = {
             id: Math.floor(Math.random() * 100000), // Generate a random ID
             recipient: formState.name,
@@ -65,76 +82,92 @@ const ExerciseOrderPage: React.FC = () => {
         setOrders([...orders, newOrder]);
         setFormState({
             name: "",
-            weight: "100kg",
+            weight: WeightOption["100kg"],
             toppings: [],
         });
     };
 
     const fillFields = () => {
-        const randomToppings = ["pickle", "onion", "tomato", "lettuce", "sauce"].sort(() => Math.random() - 0.5).slice(0, 3);
-        const randomWeight = ["100kg", "200kg", "300kg"][Math.floor(Math.random() * 3)];
+        const randomToppings = Object.values(ToppingOption).sort(() => Math.random() - 0.5).slice(0, 3);
+        const randomWeight = Object.values(WeightOption)[Math.floor(Math.random() * 3)];
+
+        // Generate random boolean values for each topping
+        const randomToppingsState = Object.values(ToppingOption).reduce((acc, topping) => {
+            acc[topping] = Math.random() < 0.5; // Assign true or false randomly
+            return acc;
+        }, {} as { [topping in ToppingOption]: boolean });
+
         setFormState({
             name: faker.person.fullName(),
             weight: randomWeight,
-            toppings: randomToppings,
+            toppings: randomToppings.filter(topping => randomToppingsState[topping]),
         });
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Order a Hamburger</h1>
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <label htmlFor="name" className="font-semibold">
-                    Your Name:
-                </label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formState.name}
-                    onChange={handleInputChange}
-                    className="border border-gray-300 rounded px-2 py-1"
-                    required
-                />
+        <div className="flex flex-row gap-4 justify-center items-start mt-4">
+            <div className="order-form-container rounded-lg shadow-md p-4 bg-blue-100">
+                <h1 className="text-2xl font-bold mb-4">Order a Hamburger</h1>
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                    <label htmlFor="name" className="font-semibold">
+                        Your Name:
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formState.name}
+                        onChange={handleInputChange}
+                        className="border border-gray-300 rounded px-2 py-1"
+                        required
+                    />
 
-                <label htmlFor="weight" className="font-semibold">
-                    Weight:
-                </label>
-                <select
-                    id="weight"
-                    name="weight"
-                    value={formState.weight}
-                    onChange={handleInputChange}
-                    className="border border-gray-300 rounded px-2 py-1"
-                    required
-                >
-                    <option value="100kg">100kg - ${weightPrices["100kg"].toFixed(2)}</option>
-                    <option value="200kg">200kg - ${weightPrices["200kg"].toFixed(2)}</option>
-                    <option value="300kg">300kg - ${weightPrices["300kg"].toFixed(2)}</option>
-                </select>
+                    <label htmlFor="weight" className="font-semibold">
+                        Weight:
+                    </label>
+                    <select
+                        id="weight"
+                        name="weight"
+                        value={formState.weight}
+                        onChange={handleInputChange}
+                        className="border border-gray-300 rounded px-2 py-1"
+                        required
+                    >
+                        <option value="100kg">100kg - ${WEIGHT_PRICES["100kg"].toFixed(2)}</option>
+                        <option value="200kg">200kg - ${WEIGHT_PRICES["200kg"].toFixed(2)}</option>
+                        <option value="300kg">300kg - ${WEIGHT_PRICES["300kg"].toFixed(2)}</option>
+                    </select>
 
-                <ToppingCheckbox name="pickle" label="Pickle" onChange={handleCheckboxChange}/>
-                <ToppingCheckbox name="onion" label="Onion" onChange={handleCheckboxChange}/>
-                <ToppingCheckbox name="tomato" label="Tomato" onChange={handleCheckboxChange}/>
-                <ToppingCheckbox name="lettuce" label="Lettuce" onChange={handleCheckboxChange}/>
-                <ToppingCheckbox name="sauce" label="Sauce" onChange={handleCheckboxChange}/>
+                    <ToppingCheckbox name="pickle" label="Pickle" onChange={handleCheckboxChange}
+                                     checked={formState.toppings.includes(ToppingOption.PICKLE)}/>
+                    <ToppingCheckbox name="onion" label="Onion" onChange={handleCheckboxChange}
+                                     checked={formState.toppings.includes(ToppingOption.ONION)}/>
+                    <ToppingCheckbox name="tomato" label="Tomato" onChange={handleCheckboxChange}
+                                     checked={formState.toppings.includes(ToppingOption.TOMATO)}/>
+                    <ToppingCheckbox name="lettuce" label="Lettuce" onChange={handleCheckboxChange}
+                                     checked={formState.toppings.includes(ToppingOption.LETTUCE)}/>
+                    <ToppingCheckbox name="sauce" label="Sauce" onChange={handleCheckboxChange}
+                                     checked={formState.toppings.includes(ToppingOption.SAUCE)}/>
 
-                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                    Place Order
-                </button>
-                <button type="button" onClick={fillFields}
-                        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
-                    Fill Fields
-                </button>
-            </form>
-            {orders.length > 0 && (
-                <div className="mt-8">
-                    <h2 className="text-lg font-semibold mb-4">Recent Orders:</h2>
+                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                        Place Order
+                    </button>
+                    <button type="button" onClick={fillFields}
+                            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+                        Fill Fields
+                    </button>
+                </form>
+            </div>
+            <div>
+                <div className={clsx("rounded-lg p-4 bg-orange-100 shadow-md",
+                    {"hidden": orders.length === 0}
+                )}>
+                    <h1 className="text-2xl font-bold mb-4">Recent Orders:</h1>
                     {orders.map((order) => (
                         <OrderSummary key={order.id} order={order}/>
                     ))}
                 </div>
-            )}
+            </div>
         </div>
     );
 };
@@ -143,12 +176,14 @@ interface ToppingCheckboxProps {
     name: string;
     label: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    checked: boolean;
 }
 
-const ToppingCheckbox: React.FC<ToppingCheckboxProps> = ({name, label, onChange}) => {
+const ToppingCheckbox: React.FC<ToppingCheckboxProps> = ({name, label, onChange, checked}) => {
     return (
         <div>
-            <input type="checkbox" id={name} name={name} value={name} onChange={onChange} className="mr-2"/>
+            <input type="checkbox" id={name} name={name} value={name} checked={checked} onChange={onChange}
+                   className="mr-2"/>
             <label htmlFor={name}>{label}</label>
         </div>
     );
