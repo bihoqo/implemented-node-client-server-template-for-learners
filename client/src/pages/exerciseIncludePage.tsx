@@ -48,7 +48,7 @@ function Example1() {
                     <button
                         key={ingredient}
                         onClick={() => toggleIngredient(ingredient)}
-                        className={clsx("p-2 w-[100px] rounded-md shadow-md", selectedIngredients.includes(ingredient) ? 'bg-green-500' : 'bg-gray-300')}
+                        className={clsx("p-2 w-[100px] rounded-md shadow-md", selectedIngredients.includes(ingredient) ? 'bg-green-500 hover:bg-green-400' : 'bg-gray-300 hover:bg-gray-200')}
                     >
                         {ingredient}
                     </button>

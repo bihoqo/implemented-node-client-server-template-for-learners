@@ -4,17 +4,17 @@ import {COLORS} from "../const/colors.ts";
 
 const EXERCISES: ExerciseInfo[] = [
     {subject: "Counter", path: "/exerciseCounterPage"},
-    {subject: "Button color changes", path: "/exerciseButtonColorPage"},
-    {subject: "Layout", path: "/exerciseLayoutPage"},
-    {subject: "Options", path: "/exerciseOptionsPage"},
-    {subject: "Include", path: "/exerciseIncludePage"},
     {subject: "Input Text", path: "/exerciseInputTextPage"},
+    {subject: "Button color changes", path: "/exerciseButtonColorPage"},
+    {subject: "Options (Enum)", path: "/exerciseOptionsPage"},
+    {subject: "Layout", path: "/exerciseLayoutPage"},
+    {subject: "Toggle inputs (on & off)", path: "/exerciseIncludePage"},
     {subject: "Todo list", path: "/exerciseTodoListPage"},
     {subject: "Student Statistics", path: "/exerciseStudentStatisticsPage"},
     {subject: "Key value", path: "/exerciseKeyValuePage"},
     {subject: "Memory game", path: "/exerciseMemoryGamePage"},
     {subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
-    {subject: "Order", path: "/exerciseOrderPage"},
+    {subject: "Order hamburgers", path: "/exerciseOrderPage"},
     {subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
     {subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
 ];
