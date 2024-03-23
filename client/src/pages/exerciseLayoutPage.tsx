@@ -189,39 +189,24 @@ function generateRandomRows(numberOfRows: number): RowData[] {
 
 function LayoutExample3() {
     const rows: RowData[] = generateRandomRows(10);
-
+    
     return (
-        <div className="overflow-x-auto">
-            <div className="grid grid-cols-10fr-8fr-10fr-10fr-10fr-10fr-11fr-11fr-10fr-14fr gap-2">
-                {/* Column Headers */}
+        <div className="container mx-auto p-4">
+            <h1 className="text-3xl font-bold mb-4 text-center">Table Example</h1>
+            <div className="grid grid-cols-4 gap-4">
+                {/* Table Header */}
                 <div className="bg-gray-200 py-2 px-4">ID</div>
-                <div className="bg-gray-200 py-2 px-4">Name</div>
                 <div className="bg-gray-200 py-2 px-4">First Name</div>
                 <div className="bg-gray-200 py-2 px-4">Last Name</div>
-                <div className="bg-gray-200 py-2 px-4">Sex</div>
                 <div className="bg-gray-200 py-2 px-4">Birth Date</div>
-                <div className="bg-gray-200 py-2 px-4">Working At</div>
-                <div className="bg-gray-200 py-2 px-4">Finance</div>
-                <div className="bg-gray-200 py-2 px-4">City</div>
-                <div className="bg-gray-200 py-2 px-4">Country</div>
-                <div className="bg-gray-200 py-2 px-4">Street</div>
-                <div className="bg-gray-200 py-2 px-4">Building Number</div>
 
-                {/* Rows */}
-                {rows.map(row => (
-                    <React.Fragment key={row.id}>
-                        <div className="bg-white py-2 px-4">{row.index}</div>
+                {/* Table Rows */}
+                {rows.map((row, index) => (
+                    <React.Fragment key={index}>
                         <div className="bg-white py-2 px-4">{row.id}</div>
                         <div className="bg-white py-2 px-4">{row.firstName}</div>
                         <div className="bg-white py-2 px-4">{row.lastName}</div>
-                        <div className="bg-white py-2 px-4">{row.sex}</div>
                         <div className="bg-white py-2 px-4">{row.birthDate.toLocaleDateString()}</div>
-                        <div className="bg-white py-2 px-4">{row.workingAt}</div>
-                        <div className="bg-white py-2 px-4">{row.finance}</div>
-                        <div className="bg-white py-2 px-4">{row.city}</div>
-                        <div className="bg-white py-2 px-4">{row.country}</div>
-                        <div className="bg-white py-2 px-4">{row.street}</div>
-                        <div className="bg-white py-2 px-4">{row.buildingNumber}</div>
                     </React.Fragment>
                 ))}
             </div>
