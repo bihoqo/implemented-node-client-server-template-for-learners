@@ -124,7 +124,7 @@ const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
             () => ex5_isListRaising([1, 2, 3, 4, 5]),
             () => ex5_isListRaising([-6, -3, 6, 0, 2, 3, 3]),
             () => ex5_isListRaising([0, 0, 0, 2, 1, 0, 0]),
-            () => ex5_isListRaising([0, 1, 4, 53], 5),
+            () => ex5_isListRaising([0, 1, 4, 53]),
             () => ex5_isListRaising([1, -1]),
             () => ex5_isListRaising([]),
         ],
