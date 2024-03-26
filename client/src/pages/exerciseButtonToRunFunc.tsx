@@ -1,8 +1,8 @@
-import {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {COLORS} from "../const/colors.ts";
 import clsx from "clsx";
 
-interface ButtonExercise {
+interface ButtonToCallInputFunction {
     title: string;
     // eslint-disable-next-line @typescript-eslint/ban-types
     inputFunctions: Function[];
@@ -51,7 +51,7 @@ function ex4_removeItemFromList(listArr: number[], item: number) {
     return `[${newList.join(", ")}]`; // convert array to string with brackets
 }
 
-const BUTTONS_TO_DISPLAY: ButtonExercise[] = [
+const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
     {
         title: "ex1_sumOfList",
         inputFunctions: [
@@ -99,20 +99,10 @@ const BUTTONS_TO_DISPLAY: ButtonExercise[] = [
 ];
 
 export default function ExerciseButtonToRunFunc() {
-    const [lastClickedButton, setLastClickedButton] = useState<string>("");
-    const [resultOutputs, setResultOutputs] = useState<string[]>([]);
+    const [lastClickedButton, setLastClickedButton] = useState<ButtonToCallInputFunction | undefined>(undefined);
 
-    function buttonClickHandler(btn: ButtonExercise) {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const newResults = btn.inputFunctions.map((fn: Function, idx: number) => {
-            try {
-                return fn();
-            } catch (err: any) {
-                return `Function ${idx} failed with error: ${err.message}`
-            }
-        });
-        setResultOutputs(newResults.map((res) => String(res)));
-        setLastClickedButton(btn.title);
+    function buttonClickHandler(btn: ButtonToCallInputFunction) {
+        setLastClickedButton(btn);
     }
 
     const getRandomColor = (index: number) => {
@@ -123,30 +113,55 @@ export default function ExerciseButtonToRunFunc() {
         <div className="container mx-auto p-4">
             <div className="flex flex-col space-y-4">
                 <div className="flex flex-wrap space-x-4">
-                    {BUTTONS_TO_DISPLAY.map((btn: ButtonExercise, idx: number) => (
+                    {BUTTONS_TO_DISPLAY.map((btn: ButtonToCallInputFunction, idx: number) => (
                         <button
                             key={btn.title}
                             onClick={() => buttonClickHandler(btn)}
                             className={clsx("rounded px-4 py-2 font-bold text-black hover:opacity-75",
                                 getRandomColor(idx),
-                                { "shadow-md border-red-700 border-solid border-2": btn.title === lastClickedButton })}
+                                {"shadow-md border-red-700 border-solid border-2": btn.title === lastClickedButton?.title})}
                         >
                             {btn.title}
                         </button>
                     ))}
                 </div>
-                <div className="mt-4">
-                    <h1 className="text-3xl font-bold">Title: {lastClickedButton}</h1>
-                    {resultOutputs.map((output, idx) => {
-                        return (
-                            <div key={idx} className="text-xl">
-                                {idx}: {output}
-                            </div>
-                        );
-
-                    })}
-                </div>
+                {lastClickedButton && (
+                    <div className="mt-4">
+                        <h1 className="text-3xl font-bold my-4">{lastClickedButton.title} results:</h1>
+                        <OutputResults clickedBtn={lastClickedButton}/>
+                    </div>)}
             </div>
+        </div>
+    );
+}
+
+
+function OutputResults({clickedBtn}: { clickedBtn: ButtonToCallInputFunction }) {
+    const outputResults = useMemo(() => {
+        return clickedBtn.inputFunctions.map((fn, idx) => {
+            try {
+                return fn();
+            } catch (err: any) {
+                return `Function ${idx} failed with error: ${err.message}`
+            }
+        });
+    }, [clickedBtn.inputFunctions]);
+
+    return (
+        <div className="grid grid-cols-[1fr_20fr_40fr] gap-2">
+            {/* Table Header */}
+            <div className="bg-gray-200 py-2 text-center">Idx</div>
+            <div className="bg-gray-200 py-2 text-center">Input</div>
+            <div className="bg-gray-200 py-2 text-center">Output</div>
+
+            {/* Table Rows */}
+            {outputResults.map((output, idx) => (
+                <React.Fragment key={idx}>
+                    <div className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{idx}</div>
+                    <div className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{clickedBtn.inputFunctions[idx].toString()}</div>
+                    <div className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{output}</div>
+                </React.Fragment>
+            ))}
         </div>
     );
 }
