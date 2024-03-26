@@ -154,6 +154,18 @@ function ex10_findStudentsWithGradeHigherThan(students: Student[], grade: number
     return studentsWithHigherGrade;
 }
 
+function ex11_listToElement(listOfList: number[][]): React.ReactNode {
+    return <div>
+        {listOfList.map((list, idx) => (
+            <div key={idx}>
+                {list.map((item, idx2) => (
+                    <span key={idx2}>{item} </span>
+                ))}
+            </div>
+        ))}
+    </div>;
+}
+
 
 const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
     {
@@ -253,9 +265,17 @@ const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
         inputFunctions: [
             () => ex10_findStudentsWithGradeHigherThan([aliceStudent, bobStudent, charlieStudent, davidStudent, eveStudent], 85),
         ]
+    },
+    {
+        title: "ex11_listToElement",
+        inputFunctions: [
+            () => ex11_listToElement([[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
+            () => ex11_listToElement([[1, -2], [3, 4, 90], [5], [7, 8], [], [9]]),
+            () => ex11_listToElement([[1], [2], [3], [4], [5], [6], [7], [8], [9]]),
+            () => ex11_listToElement([]),
+        ]
     }
 ];
-
 
 
 export default function ExerciseButtonToRunFunc() {
