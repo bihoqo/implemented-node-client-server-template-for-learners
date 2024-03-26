@@ -8,7 +8,7 @@ interface ButtonToCallInputFunction {
     inputFunctions: Function[];
 }
 
-function ex1_sumOfList(listArr: number[]) {
+function ex1_sumOfList(listArr: number[]): number {
     let sum = 0;
     for (let i = 0; i < listArr.length; i++) {
         sum += listArr[i];
@@ -16,7 +16,7 @@ function ex1_sumOfList(listArr: number[]) {
     return sum;
 }
 
-function ex2_findLargest(listArr: number[]) {
+function ex2_findLargest(listArr: number[]): number | null {
     if (listArr.length === 0) {
         return null;
     }
@@ -30,7 +30,7 @@ function ex2_findLargest(listArr: number[]) {
     return largest;
 }
 
-function ex3_countNumberOfInstances(listArr: number[], item: number) {
+function ex3_countNumberOfInstances(listArr: number[], item: number): number {
     let count = 0;
     for (let i = 0; i < listArr.length; i++) {
         if (listArr[i] === item) {
@@ -40,7 +40,7 @@ function ex3_countNumberOfInstances(listArr: number[], item: number) {
     return count;
 }
 
-function ex4_removeItemFromList(listArr: number[], item: number) {
+function ex4_removeItemFromList(listArr: number[], item: number): string {
     const newList = [];
     for (let i = 0; i < listArr.length; i++) {
         if (listArr[i] !== item) {
@@ -50,6 +50,28 @@ function ex4_removeItemFromList(listArr: number[], item: number) {
 
     return `[${newList.join(", ")}]`; // convert array to string with brackets
 }
+
+
+function ex5_isListRaising(listArr: number[]): boolean {
+    for (let i = 1; i < listArr.length; i++) {
+        if (listArr[i] <= listArr[i - 1]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function ex6_isItemInList(listArr: number[], item: number): boolean {
+    for (let i = 0; i < listArr.length; i++) {
+        if (listArr[i] === item) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
     {
@@ -96,6 +118,29 @@ const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
             () => ex4_removeItemFromList([], 0),
         ],
     },
+    {
+        title: "ex5_isListRaising",
+        inputFunctions: [
+            () => ex5_isListRaising([1, 2, 3, 4, 5]),
+            () => ex5_isListRaising([-6, -3, 6, 0, 2, 3, 3]),
+            () => ex5_isListRaising([0, 0, 0, 2, 1, 0, 0]),
+            () => ex5_isListRaising([0, 1, 4, 53], 5),
+            () => ex5_isListRaising([1, -1]),
+            () => ex5_isListRaising([]),
+        ],
+    },
+    {
+        title: "ex6_isItemInList",
+        inputFunctions: [
+            () => ex6_isItemInList([1, 2, 3, 4, 5], 1),
+            () => ex6_isItemInList([-6, -3, 6, 0, 2, 3, 3], 3),
+            () => ex6_isItemInList([0, 0, 0, 2, 1, 0, 0], 0),
+            () => ex6_isItemInList([0, 0, 0, 2, 1, 0, 0], 1),
+            () => ex6_isItemInList([0, 0, 0, 2, 1, 0, 0], 5),
+            () => ex6_isItemInList([1, -1], 0),
+            () => ex6_isItemInList([], 0),
+        ],
+    },
 ];
 
 export default function ExerciseButtonToRunFunc() {
@@ -140,7 +185,7 @@ function OutputResults({clickedBtn}: { clickedBtn: ButtonToCallInputFunction }) 
     const outputResults = useMemo(() => {
         return clickedBtn.inputFunctions.map((fn, idx) => {
             try {
-                return fn();
+                return String(fn());
             } catch (err: any) {
                 return `Function ${idx} failed with error: ${err.message}`
             }
@@ -157,9 +202,12 @@ function OutputResults({clickedBtn}: { clickedBtn: ButtonToCallInputFunction }) 
             {/* Table Rows */}
             {outputResults.map((output, idx) => (
                 <React.Fragment key={idx}>
-                    <div className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{idx}</div>
-                    <div className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{clickedBtn.inputFunctions[idx].toString()}</div>
-                    <div className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{output}</div>
+                    <div
+                        className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{idx}</div>
+                    <div
+                        className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{clickedBtn.inputFunctions[idx].toString()}</div>
+                    <div
+                        className={clsx("py-2 px-4 font-medium", idx % 2 === 0 ? "bg-white" : "bg-gray-100")}>{output}</div>
                 </React.Fragment>
             ))}
         </div>
