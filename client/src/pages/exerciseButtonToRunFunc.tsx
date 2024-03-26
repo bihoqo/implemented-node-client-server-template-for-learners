@@ -13,6 +13,17 @@ interface Car {
     speed: number;
 }
 
+interface Student {
+    name: string;
+    grades: Record<string, number>; // subject -> grade
+}
+
+const aliceStudent: Student = {name: "Alice", grades: {"Math": 90, "Science": 80, "History": 70}};
+const bobStudent: Student = {name: "Bob", grades: {"Math": 100, "Science": 100, "History": 100}};
+const charlieStudent: Student = {name: "Charlie", grades: {"Math": 50, "Science": 60, "History": 70}};
+const davidStudent: Student = {name: "David", grades: {"Math": 70, "Science": 80, "History": 90}};
+const eveStudent: Student = {name: "Eve", grades: {"Math": 80, "Science": 70, "History": 60}};
+
 function ex1_sumOfList(listArr: number[]): number {
     let sum = 0;
     for (let i = 0; i < listArr.length; i++) {
@@ -77,7 +88,7 @@ function ex6_isItemInList(listArr: number[], item: number): boolean {
     return false;
 }
 
-function ex7_runCar(): string {
+function ex7_runCar(): React.ReactNode {
     const output: string[] = [];
     const car: Car = {position: 0, speed: 0};
     output.push(`1. Car position: ${car.position}, speed: ${car.speed}`);
@@ -90,7 +101,39 @@ function ex7_runCar(): string {
     car.position += car.speed;
     output.push(`3. Car position: ${car.position}, speed: ${car.speed}`);
 
-    return output.join(" | ");
+    return <div>
+        {output.map((line, idx) => (
+            <div key={idx}>{line}</div>
+        ))}
+    </div>
+}
+
+function ex8_studentAverage(student: Student ): number {
+    let sum = 0;
+    let count = 0;
+    for (const grade of Object.values(student.grades)) {
+        sum += grade;
+        count++;
+    }
+    return sum / count;
+}
+
+function ex9_studentWithBiggestGradeAverage(students: Student[]): Student | null {
+    if (students.length === 0) {
+        return null;
+    }
+
+    let maxAverage = ex8_studentAverage(students[0]);
+    let studentWithMaxAverage = students[0];
+    for (let i = 1; i < students.length; i++) {
+        const average = ex8_studentAverage(students[i]);
+        if (average > maxAverage) {
+            maxAverage = average;
+            studentWithMaxAverage = students[i];
+        }
+    }
+
+    return studentWithMaxAverage;
 }
 
 
@@ -168,6 +211,25 @@ const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
             () => ex7_runCar(),
         ],
     },
+    {
+        title: "ex8_studentAverage",
+        inputFunctions: [
+            () => ex8_studentAverage(aliceStudent),
+            () => ex8_studentAverage(bobStudent),
+            () => ex8_studentAverage(charlieStudent),
+            () => ex8_studentAverage(davidStudent),
+            () => ex8_studentAverage(eveStudent),
+        ],
+    },
+    {
+        title: "ex9_studentWithBiggestGradeAverage",
+        inputFunctions: [
+            () => ex9_studentWithBiggestGradeAverage([aliceStudent, bobStudent, charlieStudent, davidStudent, eveStudent]),
+            () => ex9_studentWithBiggestGradeAverage([aliceStudent, charlieStudent]),
+            () => ex9_studentWithBiggestGradeAverage([davidStudent]),
+            () => ex9_studentWithBiggestGradeAverage([]),
+        ]
+    }
 ];
 
 export default function ExerciseButtonToRunFunc() {
@@ -189,7 +251,7 @@ export default function ExerciseButtonToRunFunc() {
                         <button
                             key={btn.title}
                             onClick={() => buttonClickHandler(btn)}
-                            className={clsx("rounded px-4 py-2 font-bold text-black hover:opacity-75",
+                            className={clsx("rounded mb-1 px-4 py-2 font-bold text-black hover:opacity-75",
                                 getRandomColor(idx),
                                 {"shadow-md border-red-700 border-solid border-2": btn.title === lastClickedButton?.title})}
                         >
@@ -212,6 +274,29 @@ function OutputResults({clickedBtn}: { clickedBtn: ButtonToCallInputFunction }) 
     const outputResults = useMemo(() => {
         return clickedBtn.inputFunctions.map((fn, idx) => {
             try {
+                const res = fn();
+                if (typeof res === "boolean") {
+                    return res ? "true" : "false";
+                }
+                if (typeof res === "number") {
+                    return String(res);
+                }
+                if (typeof res === "string") {
+                    return res;
+                }
+                if (Array.isArray(res)) {
+                    return `[${res.join(", ")}]`;
+                }
+                if (React.isValidElement(res)) {
+                    return res;
+                }
+                if (typeof res === "object") {
+                    try {
+                        return JSON.stringify(res);
+                    } catch (err) {
+                        console.log("Error in JSON.stringify", res, err);
+                    }
+                }
                 return String(fn());
             } catch (err: any) {
                 return `Function ${idx} failed with error: ${err.message}`
