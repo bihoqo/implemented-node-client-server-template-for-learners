@@ -8,6 +8,11 @@ interface ButtonToCallInputFunction {
     inputFunctions: Function[];
 }
 
+interface Car {
+    position: number;
+    speed: number;
+}
+
 function ex1_sumOfList(listArr: number[]): number {
     let sum = 0;
     for (let i = 0; i < listArr.length; i++) {
@@ -70,6 +75,22 @@ function ex6_isItemInList(listArr: number[], item: number): boolean {
     }
 
     return false;
+}
+
+function ex7_runCar(): string {
+    const output: string[] = [];
+    const car: Car = {position: 0, speed: 0};
+    output.push(`1. Car position: ${car.position}, speed: ${car.speed}`);
+
+    car.speed = 10;
+    car.position += car.speed;
+    output.push(`Set speed to 10`);
+    output.push(`2. Car position: ${car.position}, speed: ${car.speed}`);
+
+    car.position += car.speed;
+    output.push(`3. Car position: ${car.position}, speed: ${car.speed}`);
+
+    return output.join(" | ");
 }
 
 
@@ -139,6 +160,12 @@ const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
             () => ex6_isItemInList([0, 0, 0, 2, 1, 0, 0], 5),
             () => ex6_isItemInList([1, -1], 0),
             () => ex6_isItemInList([], 0),
+        ],
+    },
+    {
+        title: "ex7_runCar",
+        inputFunctions: [
+            () => ex7_runCar(),
         ],
     },
 ];
