@@ -1,0 +1,152 @@
+import {useState} from "react";
+import {COLORS} from "../const/colors.ts";
+import clsx from "clsx";
+
+interface ButtonExercise {
+    title: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    inputFunctions: Function[];
+}
+
+function ex1_sumOfList(listArr: number[]) {
+    let sum = 0;
+    for (let i = 0; i < listArr.length; i++) {
+        sum += listArr[i];
+    }
+    return sum;
+}
+
+function ex2_findLargest(listArr: number[]) {
+    if (listArr.length === 0) {
+        return null;
+    }
+
+    let largest = listArr[0];
+    for (let i = 1; i < listArr.length; i++) {
+        if (listArr[i] > largest) {
+            largest = listArr[i];
+        }
+    }
+    return largest;
+}
+
+function ex3_countNumberOfInstances(listArr: number[], item: number) {
+    let count = 0;
+    for (let i = 0; i < listArr.length; i++) {
+        if (listArr[i] === item) {
+            count++;
+        }
+    }
+    return count;
+}
+
+function ex4_removeItemFromList(listArr: number[], item: number) {
+    const newList = [];
+    for (let i = 0; i < listArr.length; i++) {
+        if (listArr[i] !== item) {
+            newList.push(listArr[i]);
+        }
+    }
+
+    return `[${newList.join(", ")}]`; // convert array to string with brackets
+}
+
+const BUTTONS_TO_DISPLAY: ButtonExercise[] = [
+    {
+        title: "ex1_sumOfList",
+        inputFunctions: [
+            () => ex1_sumOfList([1, 2, 3, 4, 5]),
+            () => ex1_sumOfList([-6, -3, 6, 0, 2, 5, 20]),
+            () => ex1_sumOfList([0, 0, 0, 2, 1, 0, 0]),
+            () => ex1_sumOfList([1, -1]),
+            () => ex1_sumOfList([]),
+        ],
+    },
+    {
+        title: "ex2_findLargest",
+        inputFunctions: [
+            () => ex2_findLargest([1, 2, 3, 4, 5]),
+            () => ex2_findLargest([-6, -3, 6, 0, 2, 5, 20]),
+            () => ex2_findLargest([0, 0, 0, 2, 1, 0, 0]),
+            () => ex2_findLargest([1, -1]),
+            () => ex2_findLargest([]),
+        ],
+    },
+    {
+        title: "ex3_countNumberOfInstances",
+        inputFunctions: [
+            () => ex3_countNumberOfInstances([1, 2, 3, 4, 5, 1], 1),
+            () => ex3_countNumberOfInstances([-6, -3, 6, 0, 2, 3, 3], 3),
+            () => ex3_countNumberOfInstances([0, 0, 0, 2, 1, 0, 0], 0),
+            () => ex3_countNumberOfInstances([0, 0, 0, 2, 1, 0, 0], 1),
+            () => ex3_countNumberOfInstances([0, 0, 0, 2, 1, 0, 0], 5),
+            () => ex3_countNumberOfInstances([1, -1], 0),
+            () => ex3_countNumberOfInstances([], 0),
+        ],
+    },
+    {
+        title: "ex4_removeItemFromList",
+        inputFunctions: [
+            () => ex4_removeItemFromList([1, 2, 3, 4, 5, 1], 1),
+            () => ex4_removeItemFromList([-6, -3, 6, 0, 2, 3, 3], 3),
+            () => ex4_removeItemFromList([0, 0, 0, 2, 1, 0, 0], 0),
+            () => ex4_removeItemFromList([0, 0, 0, 2, 1, 0, 0], 1),
+            () => ex4_removeItemFromList([0, 0, 0, 2, 1, 0, 0], 5),
+            () => ex4_removeItemFromList([1, -1], 0),
+            () => ex4_removeItemFromList([], 0),
+        ],
+    },
+];
+
+export default function ExerciseButtonToRunFunc() {
+    const [lastClickedButton, setLastClickedButton] = useState<string>("");
+    const [resultOutputs, setResultOutputs] = useState<string[]>([]);
+
+    function buttonClickHandler(btn: ButtonExercise) {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        const newResults = btn.inputFunctions.map((fn: Function, idx: number) => {
+            try {
+                return fn();
+            } catch (err: any) {
+                return `Function ${idx} failed with error: ${err.message}`
+            }
+        });
+        setResultOutputs(newResults.map((res) => String(res)));
+        setLastClickedButton(btn.title);
+    }
+
+    const getRandomColor = (index: number) => {
+        return COLORS[index % COLORS.length];
+    };
+
+    return (
+        <div className="container mx-auto p-4">
+            <div className="flex flex-col space-y-4">
+                <div className="flex flex-wrap space-x-4">
+                    {BUTTONS_TO_DISPLAY.map((btn: ButtonExercise, idx: number) => (
+                        <button
+                            key={btn.title}
+                            onClick={() => buttonClickHandler(btn)}
+                            className={clsx("rounded px-4 py-2 font-bold text-black hover:opacity-75",
+                                getRandomColor(idx),
+                                { "shadow-md border-red-700 border-solid border-2": btn.title === lastClickedButton })}
+                        >
+                            {btn.title}
+                        </button>
+                    ))}
+                </div>
+                <div className="mt-4">
+                    <h1 className="text-3xl font-bold">Title: {lastClickedButton}</h1>
+                    {resultOutputs.map((output, idx) => {
+                        return (
+                            <div key={idx} className="text-xl">
+                                {idx}: {output}
+                            </div>
+                        );
+
+                    })}
+                </div>
+            </div>
+        </div>
+    );
+}

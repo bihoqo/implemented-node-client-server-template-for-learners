@@ -19,6 +19,8 @@ import ExerciseTicTacToePage from "./pages/exerciseTicTacToePage.tsx";
 import ExerciseOrderPage from "./pages/exerciseOrderPage.tsx";
 import ExerciseLayoutPage from "./pages/exerciseLayoutPage.tsx";
 import ExerciseIncludePage from "./pages/exerciseIncludePage.tsx";
+import ExerciseButtonToRunFunc from "./pages/exerciseButtonToRunFunc.tsx";
+import ExerciseParkingLot from "./pages/exerciseParkingLot.tsx";
 
 const router = createBrowserRouter([
     {
@@ -80,6 +82,14 @@ const router = createBrowserRouter([
     {
         path: "/exerciseTicTacToePage",
         element: <ExerciseTicTacToePage/>
+    },
+    {
+        path: "/exerciseButtonToRunFunc",
+        element: <ExerciseButtonToRunFunc/>
+    },
+    {
+        path: "/exerciseParkingLot",
+        element: <ExerciseParkingLot/>
     },
 ]);
 

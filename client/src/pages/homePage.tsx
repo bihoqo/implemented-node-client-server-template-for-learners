@@ -15,6 +15,8 @@ const EXERCISES: ExerciseInfo[] = [
     {subject: "Memory game", path: "/exerciseMemoryGamePage"},
     {subject: "Tic-Tac-Toe", path: "/exerciseTicTacToePage"},
     {subject: "Order hamburgers", path: "/exerciseOrderPage"},
+    {subject: "Parking Lot", path: "/exerciseParkingLot"},
+    {subject: "Button to run functions", path: "/exerciseButtonToRunFunc"},
     {subject: "Register (Req-Res)", path: "/exerciseRegisterPage"},
     {subject: "Login (Req-Res)", path: "/exerciseLoginPage"},
 ];
