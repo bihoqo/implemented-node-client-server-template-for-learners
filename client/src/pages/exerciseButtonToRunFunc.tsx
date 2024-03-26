@@ -136,6 +136,24 @@ function ex9_studentWithBiggestGradeAverage(students: Student[]): Student | null
     return studentWithMaxAverage;
 }
 
+function ex10_findStudentsWithGradeHigherThan(students: Student[], grade: number): Student[] {
+    const studentsWithHigherGrade: Student[] = [];
+    for (const student of students) {
+        let hasHigherGrade = false;
+        for (const studentGrade of Object.values(student.grades)) {
+            if (studentGrade > grade) {
+                hasHigherGrade = true;
+                break;
+            }
+        }
+        if (hasHigherGrade) {
+            studentsWithHigherGrade.push(student);
+        }
+    }
+
+    return studentsWithHigherGrade;
+}
+
 
 const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
     {
@@ -229,8 +247,16 @@ const BUTTONS_TO_DISPLAY: ButtonToCallInputFunction[] = [
             () => ex9_studentWithBiggestGradeAverage([davidStudent]),
             () => ex9_studentWithBiggestGradeAverage([]),
         ]
+    },
+    {
+        title: "ex10_findStudentsWithGradeHigherThan",
+        inputFunctions: [
+            () => ex10_findStudentsWithGradeHigherThan([aliceStudent, bobStudent, charlieStudent, davidStudent, eveStudent], 85),
+        ]
     }
 ];
+
+
 
 export default function ExerciseButtonToRunFunc() {
     const [lastClickedButton, setLastClickedButton] = useState<ButtonToCallInputFunction | undefined>(undefined);
@@ -269,38 +295,39 @@ export default function ExerciseButtonToRunFunc() {
     );
 }
 
+function stringfyAny(value: any): any {
+    try {
+        if (React.isValidElement(value)) {
+            return value;
+        }
+        if (Array.isArray(value)) {
+            return `[${value.map((v: any) => stringfyAny(v)).join(", ")}]`;
+        }
+        if (typeof value === "boolean") {
+            return value ? "true" : "false";
+        }
+        if (typeof value === "number") {
+            return String(value);
+        }
+        if (typeof value === "string") {
+            return value;
+        }
+        if (Array.isArray(value)) {
+            return `[${value.join(", ")}]`;
+        }
+        if (typeof value === "object") {
+            return JSON.stringify(value, null, 1);
+        }
+    } catch (err) {
+        console.log("Error in stringfyAny", value, err);
+        return String(value);
+    }
+}
 
 function OutputResults({clickedBtn}: { clickedBtn: ButtonToCallInputFunction }) {
     const outputResults = useMemo(() => {
-        return clickedBtn.inputFunctions.map((fn, idx) => {
-            try {
-                const res = fn();
-                if (typeof res === "boolean") {
-                    return res ? "true" : "false";
-                }
-                if (typeof res === "number") {
-                    return String(res);
-                }
-                if (typeof res === "string") {
-                    return res;
-                }
-                if (Array.isArray(res)) {
-                    return `[${res.join(", ")}]`;
-                }
-                if (React.isValidElement(res)) {
-                    return res;
-                }
-                if (typeof res === "object") {
-                    try {
-                        return JSON.stringify(res);
-                    } catch (err) {
-                        console.log("Error in JSON.stringify", res, err);
-                    }
-                }
-                return String(fn());
-            } catch (err: any) {
-                return `Function ${idx} failed with error: ${err.message}`
-            }
+        return clickedBtn.inputFunctions.map((fn) => {
+            return stringfyAny(fn());
         });
     }, [clickedBtn.inputFunctions]);
 
